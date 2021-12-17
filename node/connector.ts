@@ -18,10 +18,7 @@ import { Clients } from './clients'
 //import { randomString } from './utils'
 import { executeAuthorization } from './flow'
 
-export default class TestSuiteApprover extends PaymentProvider<Clients> {
-  // This class needs modifications to pass the test suit.
-  // Refer to https://help.vtex.com/en/tutorial/payment-provider-protocol#4-testing
-  // in order to learn about the protocol and make the according changes.
+export default class Connector2c2p extends PaymentProvider<Clients> {
 
   public async authorize(
     authorization: AuthorizationRequest
@@ -29,9 +26,18 @@ export default class TestSuiteApprover extends PaymentProvider<Clients> {
     const paymentIdResponse = await this.context.clients.paymentIdRepository.get(authorization.paymentId,["_all"])
 
     if(!paymentIdResponse){
+
+      //make payment call and store payment
+      const paymentToken = ""
+      const amount = ""
+      const invoiceNo = ""
+
       this.context.clients.paymentIdRepository.saveOrUpdate({
         id: authorization.paymentId,
         paymentId: authorization.paymentId,
+        paymentToken: paymentToken,
+        amount: amount,
+        invoiceNo: invoiceNo,
         status: "undefined"
        })
 

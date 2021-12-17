@@ -2,7 +2,7 @@ import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 
 
-export default class External
+export default class API2c2p
     extends ExternalClient {
     // eslint-disable-next-line @typescript-eslint/no-useless-constructor
     constructor(context: IOContext, options?: InstanceOptions) {
@@ -18,3 +18,5 @@ export default class External
 
     }
 }
+
+// TO EDIT

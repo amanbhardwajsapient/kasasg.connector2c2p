@@ -1,17 +1,15 @@
 {
-  "name": "payment-provider",
-  "vendor": "partnerintegrationbra",
+  "name": "connector2c2p",
+  "vendor": "kasasg",
   "version": "0.1.4",
-  "title": "Payment Provider Example",
-  "description": "Reference app for Payment-Provider protocol implementers",
+  "title": "Payment Provider 2c2p",
+  "description": "App for Payment-Provider protocol implementers",
   "builders": {
     "paymentProvider": "1.x",
     "node": "6.x",
     "react": "2.x",
-    "pages": "0.x",
     "messages": "0.x",
-    "docs": "0.x",
-    "masterdata": "1.x"
+    "docs": "0.x"
   },
   "policies": [
     {

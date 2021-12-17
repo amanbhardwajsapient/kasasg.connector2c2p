@@ -6,6 +6,15 @@
       "paymentId": {
         "type": "string"
       },
+      "paymentToken": {
+        "type": "string"
+      },
+      "amount": {
+        "type": "string"
+      },
+      "invoiceNo": {
+        "type": "string"
+      },
       "status": {
         "type":"string",
         "enum": [
@@ -18,11 +27,17 @@
     "v-default-fields": [
       "id",
       "paymentId",
+      "paymentToken",
+      "amount",
+      "invoiceNo",
       "status"
     ],
     "v-indexed": [
       "id",
       "paymentId",
+      "paymentToken",
+      "amount",
+      "invoiceNo",
       "status"
     ],
     "v-cache": false

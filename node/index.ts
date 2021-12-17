@@ -7,7 +7,7 @@ import { PaymentProviderService } from '@vtex/payment-provider'
 
 import { inboundRequest, changeStatus } from './handlers/paymentApp'
 //  import router from './routes'
-import TestSuiteApprover from './connector'
+import Connector2c2p from './connector'
 import { Clients
  } from './clients'
 const TIMEOUT_MS = 15000
@@ -31,7 +31,7 @@ declare global {
 
 export default new PaymentProviderService({
   clients,
-  connector: TestSuiteApprover,
+  connector: Connector2c2p,
   routes: {
     paymentApp: method({
       POST: [inboundRequest],
