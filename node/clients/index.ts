@@ -2,6 +2,7 @@ import { IOClients } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 
 import API2c2p from './API2c2p'
+import External from './External'
 
 export interface Payment2c2pIds {
     id: string
@@ -14,8 +15,12 @@ export interface Payment2c2pIds {
 
 export class Clients extends IOClients {
 
-    public get external() {
+    public get api2c2p() {
         return this.getOrSet('api2c2p', API2c2p)
+      }
+
+    public get external() {
+        return this.getOrSet('external', External)
       }
 
     public get paymentIdRepository() {

@@ -25,19 +25,17 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
   ): Promise<AuthorizationResponse> {
     const paymentIdResponse = await this.context.clients.paymentIdRepository.get(authorization.paymentId,["_all"])
 
-    if(!paymentIdResponse){
+    console.log("-------------------------- AUTHORIZE REQUEST", paymentIdResponse)
 
-      //make payment call and store payment
-      const paymentToken = ""
-      const amount = ""
-      const invoiceNo = ""
+    if(!paymentIdResponse){
+      const paymentToken = await this.context.clients.api2c2p.getPaymentToken({invoiceNo: authorization.orderId, description: authorization.orderId, amount: authorization.value, currencyCode: "SGD"})
 
       this.context.clients.paymentIdRepository.saveOrUpdate({
         id: authorization.paymentId,
         paymentId: authorization.paymentId,
         paymentToken: paymentToken,
-        amount: amount,
-        invoiceNo: invoiceNo,
+        amount: authorization.value.toString(),
+        invoiceNo: authorization.orderId,
         status: "undefined"
        })
 
