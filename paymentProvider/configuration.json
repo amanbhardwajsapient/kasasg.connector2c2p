@@ -1,5 +1,5 @@
 {
-  "name": "IntegrationConnector",
+  "name": "Connector2c2p",
   "implementsSplit": true,
   "usesAntifraud": true,
   "usesBankInvoiceEnglishName": true,
