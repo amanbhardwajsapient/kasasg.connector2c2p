@@ -5,7 +5,7 @@ import {
 } from '@vtex/api'
 import { PaymentProviderService } from '@vtex/payment-provider'
 
-import { inboundRequest, changeStatus } from './handlers/paymentApp'
+import { changeStatus } from './handlers/paymentApp'
 //  import router from './routes'
 import Connector2c2p from './connector'
 import { Clients
@@ -33,9 +33,6 @@ export default new PaymentProviderService({
   clients,
   connector: Connector2c2p,
   routes: {
-    paymentApp: method({
-      POST: [inboundRequest],
-    }),
     changeStatus: method({
       POST: [changeStatus],
     }),

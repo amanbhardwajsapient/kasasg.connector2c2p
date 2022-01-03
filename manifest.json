@@ -9,7 +9,9 @@
     "node": "6.x",
     "react": "2.x",
     "messages": "0.x",
-    "docs": "0.x"
+    "docs": "0.x",
+    "pages": "0.x",
+    "masterdata": "1.x"
   },
   "policies": [
     {

@@ -41,10 +41,6 @@
             "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/inbound/:action",
             "public": true
         },
-        "paymentApp": {
-            "path": "/_v/kasasg.connector2c2p/v0/paymentapp",
-            "public": true
-        },
         "changeStatus": {
             "path": "/_v/kasasg.connector2c2p/v0/changeStatus",
             "public": true

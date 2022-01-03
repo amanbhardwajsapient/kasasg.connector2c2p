@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "title": "PaymentId",
+    "title": "Payment2c2pId",
     "type": "object",
     "properties": {
       "paymentId": {

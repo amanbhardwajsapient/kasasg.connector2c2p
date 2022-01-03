@@ -1,12 +1,9 @@
 import { IOClients } from '@vtex/api'
-import type { MasterDataEntity } from '@vtex/clients'
 import { masterDataFor } from '@vtex/clients'
 
 import API2c2p from './API2c2p'
 
-export type IPaymentIdsRepository = MasterDataEntity<PaymentIds>
-
-export interface PaymentIds {
+export interface Payment2c2pIds {
     id: string
     paymentId: string
     paymentToken: string
@@ -24,7 +21,7 @@ export class Clients extends IOClients {
     public get paymentIdRepository() {
         return this.getOrSet(
           'paymentIdRepository',
-          masterDataFor<PaymentIds>('paymentid')
+          masterDataFor<Payment2c2pIds>('paymentid')
         )
       }
 

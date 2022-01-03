@@ -1,22 +1,19 @@
 import { json } from 'co-body'
 
-export async function inboundRequest(ctx: Context) {
-  const body: {
-    inboundRequestsUrl: string
-  } = await json(ctx.req)
+// export async function getPaymentToken(ctx: Context) {
+//   const body: {
+//     invoiceNo: string,
+//     description: string, 
+//     amount: string, 
+//     currencyCode: string
+//   } = await json(ctx.req)
   
-  const request = {
-    text:"Funcionou"
-  }
-  const response = await ctx.clients.external.sendPost(
-    `${body.inboundRequestsUrl.split('/:')[0]}/teste`,
-    request
-  )
-  // API CALL HERE
+//   console.log("paymentApp ", body)
+//   const response = await ctx.clients.api2c2p.getPaymentToken(body)
 
-  ctx.status = 200
-  ctx.body =  response
-}
+//   ctx.status = 200
+//   ctx.body = response
+// }
 
 export async function changeStatus(ctx: Context) {
   const body: {
@@ -49,7 +46,6 @@ export async function changeStatus(ctx: Context) {
       body.callbackUrl,
       request
     )
-    // API CALL HERE
   
     ctx.status = 200
     ctx.body =  response

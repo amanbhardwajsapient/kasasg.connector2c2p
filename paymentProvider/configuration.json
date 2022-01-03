@@ -109,5 +109,15 @@
       "name": "MercadoPagoPro",
       "allowsSplit": "onCapture"
     }
+  ],
+  "customFields": [
+    {
+      "name": "Merchant Key",
+      "type": "text"
+    },
+    {
+      "name": "Secret Key",
+      "type": "text"
+    }
   ]
 }
