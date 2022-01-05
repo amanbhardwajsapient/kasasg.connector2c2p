@@ -1,6 +1,6 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
-const jwt = require('jsonwebtoken');
+import jwt = require('jsonwebtoken')
 
 
 export default class API2c2p
@@ -14,33 +14,53 @@ export default class API2c2p
 
     public async getPaymentToken(paymentData: any) : Promise<any> {
 
-        const {invoiceNo, description, amount, currencyCode} = paymentData;
-        
-        // To be fetched securely and remove from here
-        const merchantID = "702702000000649"
-        const merchantSecretKey = "A04B527A9698F37C9B2747178348DA5C1FBBDC6BFB0DC8B91BEFAD2FE7E45C72"
+        const {invoiceNo, description, amount, currencyCode, merchantID, merchantSecretKey} = paymentData;
 
         const payload = {
-            merchantID,
-            invoiceNo,
-            description,
-            amount,
-            currencyCode
+            "merchantID": merchantID,
+            "invoiceNo": invoiceNo,
+            "description": description,
+            "amount": amount,
+            "currencyCode": currencyCode
         }
 
-        const requestJWT = this.generatePayload(payload, merchantSecretKey);
+        const requestResponse: any = await this.http.post(`/paymentToken`, {"payload": await jwt.sign(payload, merchantSecretKey)})
 
-        return this.decodeJWT(await this.http.post(`paymentToken`, requestJWT));
+        if(!!requestResponse.payload) {
+            return {
+                "success": true,
+                "response": jwt.decode(requestResponse.payload)
+            }
+        } else {
+            return {
+                "success": false
+            }
+        }
+    }
 
-    }
-    // implement one more method for payment inquiry
+    public async getPaymentStatus(paymentData: any) : Promise<any> {
 
-    private async generatePayload(payload: object, merchantSecretKey: string) {
-        return jwt.sign(payload, merchantSecretKey);
+        const {paymentToken, merchantID, invoiceNo, locale, merchantSecretKey} = paymentData;
+
+        const payload = {
+            "paymentToken": paymentToken,
+            "merchantID": merchantID,
+            "invoiceNo": invoiceNo,
+            "locale": locale
+        }
+
+        const requestResponse: any = await this.http.post(`/paymentInquiry`, {"payload": await jwt.sign(payload, merchantSecretKey)})
+
+        if(!!requestResponse.payload) {
+            return {
+                "success": true,
+                "response": jwt.decode(requestResponse.payload)
+            }
+        } else {
+            return {
+                "success": false
+            }
+        }
     }
-    private async decodeJWT(responseJWT: any) {
-        // write decoding logic
-        console.log(responseJWT);
-        return responseJWT;
-    }
+
 }

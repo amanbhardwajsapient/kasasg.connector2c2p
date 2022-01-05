@@ -12,10 +12,11 @@ export const flows: Record<
   Flow,
   (
     authorization: AuthorizationRequest,
+    paymentObject: Object,
     callback: (response: AuthorizationResponse) => void
   ) => AuthorizationResponse
 > = {
-  PaymentApp: (request) => {
+  PaymentApp: (request, paymentObject) => {
 
     const { paymentId, inboundRequestsUrl, callbackUrl, transactionId } = request
 
@@ -29,7 +30,7 @@ export const flows: Record<
       message: null,
       paymentAppData: {
         appName: 'kasasg.connector2c2p',
-        payload: JSON.stringify({ inboundRequestsUrl, callbackUrl, paymentId, transactionId }),
+        payload: JSON.stringify({ inboundRequestsUrl, callbackUrl, paymentId, transactionId, paymentObject }),
       },
       identificationNumber: undefined,
       identificationNumberFormatted: undefined,
@@ -44,9 +45,9 @@ export const flows: Record<
 
 export const executeAuthorization = (
   request: AuthorizationRequest,
-  callback: (response: AuthorizationResponse) => void,
-  status?: string
+  paymentObject: Object,
+  callback: (response: AuthorizationResponse) => void
 ): AuthorizationResponse => {
-  console.log(status)
-  return flows['PaymentApp'](request, callback)
+  
+  return flows['PaymentApp'](request, paymentObject, callback)
 }

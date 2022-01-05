@@ -1,6 +1,6 @@
 {
   "extensions": {
-    "checkout/transactions/payment-provider": {
+    "checkout/transactions/connector2c2p": {
       "component": "index"
     }
   }

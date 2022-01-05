@@ -25,28 +25,27 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
   ): Promise<AuthorizationResponse> {
     const paymentIdResponse = await this.context.clients.paymentIdRepository.get(authorization.paymentId,["_all"])
 
-    console.log("-------------------------- AUTHORIZE REQUEST", paymentIdResponse)
-
     if(!paymentIdResponse){
-      const paymentToken = await this.context.clients.api2c2p.getPaymentToken({invoiceNo: authorization.orderId, description: authorization.orderId, amount: authorization.value, currencyCode: "SGD"})
-
-      this.context.clients.paymentIdRepository.saveOrUpdate({
+      const paymentToken = await this.context.clients.api2c2p.getPaymentToken({invoiceNo: authorization.orderId, description: authorization.orderId, amount: authorization.value, currencyCode: "SGD", merchantID: authorization?.merchantSettings?.[0]?.value ?? "", merchantSecretKey: authorization?.merchantSettings?.[1]?.value ?? ""})
+      
+      const payment2c2pid = {
         id: authorization.paymentId,
         paymentId: authorization.paymentId,
         paymentToken: paymentToken,
         amount: authorization.value.toString(),
         invoiceNo: authorization.orderId,
         status: "undefined"
-       })
+       }
+      
+      this.context.clients.paymentIdRepository.saveOrUpdate(payment2c2pid)
 
-      return executeAuthorization(authorization, response =>
+      return executeAuthorization(authorization, payment2c2pid, response =>
         this.callback(authorization, response)
       )
     }
 
-    return executeAuthorization(authorization, response =>
-      this.callback(authorization, response),
-      paymentIdResponse.status
+    return executeAuthorization(authorization, paymentIdResponse, response =>
+      this.callback(authorization, response)
     )
     
   }
