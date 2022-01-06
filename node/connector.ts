@@ -91,7 +91,7 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
         paymentId: paymentIdResponse.paymentId,
         paymentUrl: "",
         authorizationId: "",
-        status: 'approved', //check and edit later
+        status: 'denied', //check and edit later
         acquirer: "null",
         code: "null",
         message: "null",

@@ -1,31 +1,30 @@
 import React, { Component } from 'react'
 import styles from './index.css'
+
+import Modal from 'react-modal'
 // const axios = require('axios');
+
 class PaymentApp2c2p extends Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: false,
-      text: "Payment App Integration",
-      appKey: null,
-      appToken: null
+      showModal: true,
+      text: 'Payment App Integration',
+      appPayload: JSON.parse(props.appPayload),
     }
-    console.log("FRONTEND APP RENDERED")
+    console.log('DATA: ', JSON.parse(props.appPayload))
   }
 
-  // console.log("FRONTEND APP RENDERED")
-
-  // componentWillMount = () => {
-  //   // this.injectScript(
-  //   //   'google-recaptcha-v2',
-  //   //   'https://recaptcha.net/recaptcha/api.js?render=explicit',
-  //   //   this.handleOnLoad
-  //   // )
-  // }
-
   componentDidMount() {
-    console.log("Worked")
+    console.log('Worked')
     $(window).trigger('removePaymentLoading.vtex')
+
+    // Event listener to close the Modal
+    window.addEventListener('message', data => {
+      console.log('Message Event Called', data)
+      // $(window).trigger('transactionValidation.vtex', [false])
+    })
   }
 
   // respondTransaction = status => {
@@ -105,11 +104,29 @@ class PaymentApp2c2p extends Component {
   // }
 
   render() {
-    // const { loading, text, appKey, appToken } = this.state
-
+    const { paymentToken } = this.state.appPayload.paymentObject
     return (
       <div>
-        WORKED
+        {/* Render the iFrame only if the value is greater than 500 */}
+        {paymentToken.success ? (
+          <Modal
+            style={{
+              overlay: {
+                zIndex: 99,
+              },
+            }}
+            isOpen={this.state.showModal}
+            contentLabel="Example Modal"
+          >
+            <iframe
+              title="2c2p"
+              src={paymentToken.response.webPaymentUrl}
+              className={styles.iframe}
+            />
+          </Modal>
+        ) : (
+          <p>Please add more products to the cart</p>
+        )}
       </div>
     )
   }
