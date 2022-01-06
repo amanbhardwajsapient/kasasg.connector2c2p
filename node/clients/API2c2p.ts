@@ -6,7 +6,7 @@ import jwt = require('jsonwebtoken')
 export default class API2c2p
     extends ExternalClient {
     constructor(context: IOContext, options?: InstanceOptions) {
-        super(`https://sandbox-pgw.2c2p.com/payment/4.1`, context, {
+        super(``, context, {
           ...options,
           headers: {},
         });
@@ -14,7 +14,7 @@ export default class API2c2p
 
     public async getPaymentToken(paymentData: any) : Promise<any> {
 
-        const {invoiceNo, description, amount, currencyCode, merchantID, merchantSecretKey} = paymentData;
+        const {invoiceNo, description, amount, currencyCode, merchantID, merchantSecretKey, baseURL} = paymentData;
 
         const payload = {
             "merchantID": merchantID,
@@ -24,7 +24,7 @@ export default class API2c2p
             "currencyCode": currencyCode
         }
 
-        const requestResponse: any = await this.http.post(`/paymentToken`, {"payload": await jwt.sign(payload, merchantSecretKey)})
+        const requestResponse: any = await this.http.post(`${baseURL}/paymentToken`, {"payload": await jwt.sign(payload, merchantSecretKey)})
 
         if(!!requestResponse.payload) {
             return {
@@ -40,7 +40,7 @@ export default class API2c2p
 
     public async getPaymentStatus(paymentData: any) : Promise<any> {
 
-        const {paymentToken, merchantID, invoiceNo, locale, merchantSecretKey} = paymentData;
+        const {paymentToken, merchantID, invoiceNo, locale, merchantSecretKey, baseURL} = paymentData;
 
         const payload = {
             "paymentToken": paymentToken,
@@ -49,7 +49,7 @@ export default class API2c2p
             "locale": locale
         }
 
-        const requestResponse: any = await this.http.post(`/paymentInquiry`, {"payload": await jwt.sign(payload, merchantSecretKey)})
+        const requestResponse: any = await this.http.post(`${baseURL}/paymentInquiry`, {"payload": await jwt.sign(payload, merchantSecretKey)})
 
         if(!!requestResponse.payload) {
             return {

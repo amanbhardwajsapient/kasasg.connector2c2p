@@ -1,20 +1,5 @@
 import { json } from 'co-body'
 
-// export async function getPaymentToken(ctx: Context) {
-//   const body: {
-//     invoiceNo: string,
-//     description: string, 
-//     amount: string, 
-//     currencyCode: string
-//   } = await json(ctx.req)
-  
-//   console.log("paymentApp ", body)
-//   const response = await ctx.clients.api2c2p.getPaymentToken(body)
-
-//   ctx.status = 200
-//   ctx.body = response
-// }
-
 export async function changeStatus(ctx: Context) {
   const body: {
     callbackUrl: string,

@@ -118,6 +118,10 @@
     {
       "name": "Secret Key",
       "type": "text"
+    },
+    {
+      "name": "Base URL",
+      "type": "text"
     }
   ]
 }
