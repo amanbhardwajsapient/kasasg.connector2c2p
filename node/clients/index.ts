@@ -7,7 +7,7 @@ import External from './External'
 export interface Payment2c2pIds {
     id: string
     paymentId: string
-    paymentToken: string
+    paymentToken: object
     amount: string
     invoiceNo: string
     status: string
@@ -23,11 +23,10 @@ export class Clients extends IOClients {
         return this.getOrSet('external', External)
       }
 
-    public get paymentIdRepository() {
+    public get payment2c2pid() {
         return this.getOrSet(
-          'paymentIdRepository',
-          masterDataFor<Payment2c2pIds>('paymentid')
+          'payment2c2pid',
+          masterDataFor<Payment2c2pIds>('payment2c2pid')
         )
       }
-
 }

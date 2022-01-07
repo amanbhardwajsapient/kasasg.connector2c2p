@@ -4,7 +4,7 @@ export async function changeStatus(ctx: Context) {
   const body: {
     callbackUrl: string,
     paymentId: string,
-    paymentToken: string,
+    paymentToken: object,
     amount: string,
     invoiceNo: string,
     status: string
@@ -18,7 +18,7 @@ export async function changeStatus(ctx: Context) {
     status: body.status
   }
 
-  const updated = await ctx.clients.paymentIdRepository.saveOrUpdate({
+  const updated = await ctx.clients.payment2c2pid.saveOrUpdate({
     id: body.paymentId,
     status: body.status,
     paymentToken: body.paymentToken,
