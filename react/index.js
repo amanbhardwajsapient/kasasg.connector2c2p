@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styles from './index.css'
 
 import Modal from 'react-modal'
-// const axios = require('axios');
+const axios = require('axios')
 
 class PaymentApp2c2p extends Component {
   constructor(props) {
@@ -17,15 +17,31 @@ class PaymentApp2c2p extends Component {
   }
 
   componentDidMount() {
-    console.log('Worked')
     $(window).trigger('removePaymentLoading.vtex')
 
-    // Event listener to close the Modal
-    window.addEventListener('message', data => {
+    window.addEventListener('message', async (data) => {
+      if (!data.paymentResult && data.origin.indexOf('2c2p') > -1) {
+        this.setState({ showModal: false })
+        // await this.changeStatus('denied');
+        $(window).trigger('transactionValidation.vtex')
+      }
       console.log('Message Event Called', data)
-      // $(window).trigger('transactionValidation.vtex', [false])
     })
   }
+
+  // changeStatus = async (status) => {
+  //   const inboundAPI = axios.create({
+  //     timeout: 5000,
+  //   })
+  //   const response = await inboundAPI.post(
+  //     '/_v/kasasg.connector2c2p/v0/changeStatus',
+  //     {
+  //       paymentId,
+  //       status: status,
+  //       callbackUrl,
+  //     }
+  //   )
+  // }
 
   // respondTransaction = status => {
   //   $(window).trigger('transactionValidation.vtex', [status])
@@ -80,27 +96,6 @@ class PaymentApp2c2p extends Component {
 
   //   // fetch(parsedPayload.denyPaymentUrl).then(() => {
   //   // })
-  // }
-
-  // inboundRequest = async () => {
-  //   const parsedPayload = JSON.parse(this.props.appPayload)
-  //   this.setState({ loading: true })
-
-  //   const inboundAPI = axios.create({
-  //     //baseURL: body.inboundRequestsUrl.split('/:')[0],
-  //     timeout: 5000,
-  //   })
-  //   try {
-  //     const response = await inboundAPI.post('/_v/partnerintegrationbra.payment-provider/v0/paymentapp',
-  //       {
-  //         inboundRequestsUrl: parsedPayload.inboundRequestsUrl
-  //       });
-  //     console.log(response.data)
-  //     this.setState({ text: response.data.text, appKey: response.data.appKey, appToken: response.data.appToken, loading: false })
-  //   }
-  //   catch (err) {
-  //     this.setState({ text: "Erro", loading: false })
-  //   }
   // }
 
   render() {
