@@ -7,10 +7,11 @@ import External from './External'
 export interface Payment2c2pIds {
     id: string
     paymentId: string
-    paymentToken: object
+    paymentToken: string
     amount: string
     invoiceNo: string
     status: string
+    authorizationComplete: boolean
   }
 
 export class Clients extends IOClients {

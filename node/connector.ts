@@ -40,23 +40,26 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
           'https://sandbox-pgw.2c2p.com/payment/4.1',
       })
 
-      const payment2c2pid = {
+      let payment2c2pid = {
         id: authorization.paymentId,
         paymentId: authorization.paymentId,
-        paymentToken: paymentToken,
+        paymentToken: paymentToken.response.paymentToken,
         amount: authorization.value.toString(),
         invoiceNo: authorization.orderId,
         status: 'undefined',
+        authorizationComplete: false
       }
 
-      this.context.clients.payment2c2pid.saveOrUpdate(payment2c2pid)
+      await this.context.clients.payment2c2pid.saveOrUpdate(payment2c2pid)
+
+      payment2c2pid.paymentToken = paymentToken
 
       return executeAuthorization(authorization, payment2c2pid, response =>
         this.callback(authorization, response)
       )
     }
 
-    const paymentStatusObject = await this.context.clients.api2c2p.getPaymentStatus(
+    const paymentStatusObject = paymentIdResponse.authorizationComplete ? await this.context.clients.api2c2p.getPaymentStatus(
       {
         paymentToken: paymentIdResponse.paymentToken,
         merchantID: authorization?.merchantSettings?.[0]?.value ?? '',
@@ -67,9 +70,11 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
           authorization?.merchantSettings?.[2]?.value ??
           'https://sandbox-pgw.2c2p.com/payment/4.1',
       }
-    )
+    ) : false
 
-    if (paymentStatusObject.respCode === '0000') {
+    console.log("paymentStatusObject",paymentStatusObject);
+
+    if (paymentStatusObject && paymentStatusObject.respCode === '0000') {
       return {
         paymentId: paymentIdResponse.paymentId,
         paymentUrl: '',
@@ -122,7 +127,6 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
   public async settle(
     settlement: SettlementRequest
   ): Promise<SettlementResponse> {
-    console.log("SETTTTTTLING")
     return Settlements.approve(settlement, { settleId: '123456' })
   }
 

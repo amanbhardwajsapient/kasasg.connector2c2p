@@ -23,6 +23,7 @@
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.6",
     "@vtex/payment-provider": "^1.4.0",
+    "axios": "^0.24.0",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
