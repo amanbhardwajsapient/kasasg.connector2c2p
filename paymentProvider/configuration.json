@@ -122,6 +122,10 @@
     {
       "name": "Base URL",
       "type": "text"
+    },
+    {
+      "name": "Settlement URL",
+      "type": "text"
     }
   ]
 }

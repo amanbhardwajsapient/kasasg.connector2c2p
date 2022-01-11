@@ -17,7 +17,6 @@ const PaymentApp2c2p = props => {
         message.data.paymentResult.respCode != '2000' &&
         message.data.paymentResult.respCode != '1001'
       ) {
-        console.log('message', message.data.paymentResult)
         setShowModal(false)
         await changeStatus('denied', false)
         $(window).trigger('transactionValidation.vtex', [false])
@@ -26,7 +25,6 @@ const PaymentApp2c2p = props => {
         message.data.paymentResult &&
         message.data.paymentResult.respCode == '2000'
       ) {
-        console.log('message', message.data.paymentResult)
         setShowModal(false)
         await changeStatus('approved', true)
         $(window).trigger('transactionValidation.vtex', [true])
@@ -36,7 +34,7 @@ const PaymentApp2c2p = props => {
 
   const changeStatus = async (status, authorizationComplete) => {
     const inboundAPI = axios.create({
-      timeout: 500000,
+      timeout: 5000,
     })
     const response = await inboundAPI.post(
       '/_v/kasasg.connector2c2p/v0/changeStatus',
@@ -51,7 +49,6 @@ const PaymentApp2c2p = props => {
         authorizationComplete: authorizationComplete,
       }
     )
-    console.log(response)
   }
 
   return (

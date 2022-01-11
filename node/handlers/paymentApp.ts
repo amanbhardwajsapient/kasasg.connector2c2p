@@ -30,8 +30,6 @@ export async function changeStatus(ctx: Context) {
     authorizationComplete: body.authorizationComplete
   })
 
-  console.log(updated)
-
   if (updated) {
     const response = await ctx.clients.external.sendPost(
       body.callbackUrl,

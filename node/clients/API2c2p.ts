@@ -1,8 +1,8 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 import jwt = require('jsonwebtoken')
-
-
+import xmlBuilder = require('xmlbuilder')
+// import xmlParser = require('xml2js')
 export default class API2c2p
     extends ExternalClient {
     constructor(context: IOContext, options?: InstanceOptions) {
@@ -61,6 +61,38 @@ export default class API2c2p
                 "success": false
             }
         }
+    }
+
+    public async getSettlementResponse(paymentData: any) : Promise<any> {
+        console.log("SETTLING API")
+        const {merchantID, invoiceNo, merchantSecretKey, settlementURL} = paymentData
+
+        const payload = {
+            PaymentProcessRequest: {
+                version: {
+                    '#text': 3.8
+                },
+                merchantID: {
+                    '#text': merchantID
+                },
+                processType: {
+                    '#text': 'S'
+                },
+                invoiceNo: {
+                    '#text': invoiceNo
+                }
+            }
+        }
+
+        const xmlPayload = xmlBuilder.create(payload).end({ pretty: true})
+        console.log("xmlPayload--------------",xmlPayload)
+
+        const requestResponse: any = await this.http.post(`${settlementURL}`, await jwt.sign(payload, merchantSecretKey))
+        console.log(requestResponse)
+        // return xmlParser.parseString(jwt.decode(requestResponse), function (err: any, result: any) {
+        //     console.dir(result);
+        //     return result
+        // });
     }
 
 }
