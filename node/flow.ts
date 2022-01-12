@@ -23,7 +23,7 @@ export const flows: Record<
     return {
       paymentId,
       paymentUrl: null,
-      authorizationId: '1234',
+      authorizationId: paymentId,
       status: 'undefined',
       acquirer: null,
       code: null,
@@ -37,8 +37,8 @@ export const flows: Record<
       barCodeImageNumber: undefined,
       barCodeImageType: undefined,
       delayToCancel: 600,
-      tid: randomString(),
-      nsu: randomString()
+      tid: randomString(), //check and edit later
+      nsu: randomString() //check and edit later
     }
   },
 }

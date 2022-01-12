@@ -1,118 +1,80 @@
-import React, { Component } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './index.css'
-// const axios = require('axios');
-class PaymentApp2c2p extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: false,
-      text: "Payment App Integration",
-      appKey: null,
-      appToken: null
-    }
-    console.log("FRONTEND APP RENDERED")
-  }
 
-  // console.log("FRONTEND APP RENDERED")
+import Modal from 'react-modal'
+const axios = require('axios')
 
-  // componentWillMount = () => {
-  //   // this.injectScript(
-  //   //   'google-recaptcha-v2',
-  //   //   'https://recaptcha.net/recaptcha/api.js?render=explicit',
-  //   //   this.handleOnLoad
-  //   // )
-  // }
+const PaymentApp2c2p = props => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [showModal, setShowModal] = useState(true)
+  const [appPayload, setAppPayload] = useState(JSON.parse(props.appPayload))
 
-  componentDidMount() {
-    console.log("Worked")
+  useEffect(() => {
     $(window).trigger('removePaymentLoading.vtex')
-  }
+    window.addEventListener('message', async message => {
+      if (
+        message.origin.indexOf('2c2p') > -1 &&
+        message.data.paymentResult.respCode != '2000' &&
+        message.data.paymentResult.respCode != '1001'
+      ) {
+        setShowModal(false)
+        await changeStatus('denied', false)
+        $(window).trigger('transactionValidation.vtex', [false])
+      } else if (
+        message.origin.indexOf('2c2p') > -1 &&
+        message.data.paymentResult &&
+        message.data.paymentResult.respCode == '2000'
+      ) {
+        setShowModal(false)
+        await changeStatus('approved', true)
+        $(window).trigger('transactionValidation.vtex', [true])
+      }
+    })
+  }, [])
 
-  // respondTransaction = status => {
-  //   $(window).trigger('transactionValidation.vtex', [status])
-  // }
-
-  // cancelTransaction = async () => {
-  //   const { paymentId, callbackUrl } = JSON.parse(this.props.appPayload)
-  //   this.setState({ loading: true })
-  //   const inboundAPI = axios.create({
-  //     timeout: 5000,
-  //   })
-
-  //   try {
-  //     const response = await inboundAPI.post('/_v/partnerintegrationbra.payment-provider/v0/changeStatus',
-  //       {
-  //         paymentId,
-  //         status: "denied",
-  //         callbackUrl
-  //       });
-  //     console.log(response.data)
-  //     this.setState({ text: response.data.text, loading: false })
-  //     this.respondTransaction(false)
-  //   }
-  //   catch (err) {
-  //     this.setState({ text: "Erro", loading: false })
-  //   }
-
-  //   // fetch(parsedPayload.denyPaymentUrl).then(() => {
-  //   // })
-  // }
-
-  // confirmTransaction = async () => {
-  //   const { paymentId, callbackUrl } = JSON.parse(this.props.appPayload)
-  //   this.setState({ loading: true })
-  //   const inboundAPI = axios.create({
-  //     timeout: 5000,
-  //   })
-  //   try {
-  //     const response = await inboundAPI.post('/_v/partnerintegrationbra.payment-provider/v0/changeStatus',
-  //       {
-  //         paymentId,
-  //         status: "approved",
-  //         callbackUrl
-  //       });
-  //     console.log(response.data)
-  //     this.setState({ text: response.data.text, loading: false })
-  //     this.respondTransaction(true)
-  //   }
-  //   catch (err) {
-  //     this.setState({ text: "Erro", loading: false })
-  //   }
-
-  //   // fetch(parsedPayload.denyPaymentUrl).then(() => {
-  //   // })
-  // }
-
-  // inboundRequest = async () => {
-  //   const parsedPayload = JSON.parse(this.props.appPayload)
-  //   this.setState({ loading: true })
-
-  //   const inboundAPI = axios.create({
-  //     //baseURL: body.inboundRequestsUrl.split('/:')[0],
-  //     timeout: 5000,
-  //   })
-  //   try {
-  //     const response = await inboundAPI.post('/_v/partnerintegrationbra.payment-provider/v0/paymentapp',
-  //       {
-  //         inboundRequestsUrl: parsedPayload.inboundRequestsUrl
-  //       });
-  //     console.log(response.data)
-  //     this.setState({ text: response.data.text, appKey: response.data.appKey, appToken: response.data.appToken, loading: false })
-  //   }
-  //   catch (err) {
-  //     this.setState({ text: "Erro", loading: false })
-  //   }
-  // }
-
-  render() {
-    // const { loading, text, appKey, appToken } = this.state
-
-    return (
-      <div>
-        WORKED
-      </div>
+  const changeStatus = async (status, authorizationComplete) => {
+    const inboundAPI = axios.create({
+      timeout: 5000,
+    })
+    const response = await inboundAPI.post(
+      '/_v/kasasg.connector2c2p/v0/changeStatus',
+      {
+        paymentId: appPayload.paymentId,
+        status: status,
+        callbackUrl: appPayload.callbackUrl,
+        paymentToken:
+          appPayload.paymentObject.paymentToken.response.paymentToken,
+        amount: appPayload.paymentObject.amount,
+        invoiceNo: appPayload.paymentObject.invoiceNo,
+        authorizationComplete: authorizationComplete,
+      }
     )
   }
+
+  return (
+    <div>
+      {appPayload.paymentObject.paymentToken.success ? (
+        <Modal
+          ariaHideApp={false}
+          style={{
+            overlay: {
+              zIndex: 99,
+            },
+          }}
+          isOpen={showModal}
+          contentLabel="Example Modal"
+        >
+          <iframe
+            title="2c2p"
+            src={appPayload.paymentObject.paymentToken.response.webPaymentUrl}
+            className={styles.iframe}
+          />
+        </Modal>
+      ) : (
+        <p>Please add more products to the cart</p>
+      )}
+    </div>
+  )
 }
 
 export default PaymentApp2c2p
