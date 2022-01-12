@@ -70,7 +70,7 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
             authorization?.merchantSettings?.[2]?.value ??
             'https://sandbox-pgw.2c2p.com/payment/4.1',
         })
-      : { respCode: 'fail' }
+      : { response: { respCode: 'fail' } }
 
     if (paymentStatusObject.response.respCode === '0000') {
       return {
@@ -78,6 +78,27 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
         paymentUrl: '',
         authorizationId: '',
         status: 'approved',
+        acquirer: 'null',
+        code: 'null',
+        message: 'null',
+        identificationNumber: undefined,
+        identificationNumberFormatted: undefined,
+        barCodeImageNumber: undefined,
+        barCodeImageType: undefined,
+        delayToCancel: 600,
+        tid: paymentIdResponse.paymentId, //check and edit later
+        nsu: paymentIdResponse.paymentId, //check and edit later
+      }
+    } else if (
+      paymentStatusObject.response.respCode === '0001' ||
+      paymentStatusObject.response.respCode === '2001' ||
+      paymentStatusObject.response.respCode === '2003'
+    ) {
+      return {
+        paymentId: paymentIdResponse.paymentId,
+        paymentUrl: '',
+        authorizationId: '',
+        status: 'undefined',
         acquirer: 'null',
         code: 'null',
         message: 'null',
@@ -114,33 +135,34 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
   ): Promise<CancellationResponse> {
     return Cancellations.deny(cancellation, {
       code: '123',
-      message: 'Deu não',
+      message: 'Payment cancelled due to incomplete payment or manual cancellation.',
     })
   }
 
   public async refund(refund: RefundRequest): Promise<RefundResponse> {
-    return Refunds.approve(refund, { refundId: '12344' })
+    return Refunds.deny(refund, { message: 'Refund not implemented' })
   }
 
   public async settle(
     settlement: SettlementRequest
   ): Promise<SettlementResponse> {
-    console.log("SETTLING")
-    const paymentIdResponse = await this.context.clients.payment2c2pid.get(
-      settlement.paymentId,
-      ['_all']
-    )
-    const settlementResponse = await this.context.clients.api2c2p.getSettlementResponse(
-      {
-        invoiceNo: paymentIdResponse?.invoiceNo,
-        merchantID: settlement?.merchantSettings?.[0]?.value ?? '',
-        merchantSecretKey: settlement?.merchantSettings?.[1]?.value ?? '',
-        settlementURL:
-          settlement?.merchantSettings?.[3]?.value ??
-          'https://demo2.2c2p.com/2C2PFrontend/PaymentAction/2.0/action',
-      }
-    )
-    return Settlements.approve(settlement, { settleId: settlementResponse.referenceNo })
+    // const paymentIdResponse = await this.context.clients.payment2c2pid.get(
+    //   settlement.paymentId,
+    //   ['_all']
+    // )
+    // const settlementResponse = await this.context.clients.api2c2p.getSettlementResponse(
+    //   {
+    //     invoiceNo: paymentIdResponse?.invoiceNo,
+    //     merchantID: settlement?.merchantSettings?.[0]?.value ?? '',
+    //     amount: paymentIdResponse?.amount,
+    //     settlementURL:
+    //       settlement?.merchantSettings?.[3]?.value ??
+    //       'https://demo2.2c2p.com/2C2PFrontend/PaymentAction/2.0/action',
+    //   }
+    // )
+    return Settlements.approve(settlement, {
+      settleId: settlement.paymentId,
+    })
   }
 
   public inbound(inbound: InboundRequest): Promise<InboundResponse> {
