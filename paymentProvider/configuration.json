@@ -4,6 +4,16 @@
   "usesAntifraud": true,
   "usesBankInvoiceEnglishName": false,
   "usesSecureProxy": true,
+  "paymentMethods": [
+    {
+      "name": "Visa",
+      "allowsSplit": "onCapture"
+    },
+    {
+      "name": "Mastercard",
+      "allowsSplit": "onCapture"
+    }
+  ],
   "customFields": [
     {
       "name": "Merchant Key",
