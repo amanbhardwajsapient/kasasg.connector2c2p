@@ -1,7 +1,7 @@
 {
   "name": "connector2c2p",
   "vendor": "kasasg",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "title": "Payment Provider 2c2p",
   "description": "App for Payment-Provider protocol implementers",
   "builders": {
