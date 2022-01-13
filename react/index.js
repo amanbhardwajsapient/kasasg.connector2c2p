@@ -5,7 +5,6 @@ import Modal from 'react-modal'
 const axios = require('axios')
 
 const PaymentApp2c2p = props => {
-  const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(true)
   const [appPayload, setAppPayload] = useState(JSON.parse(props.appPayload))
 
@@ -36,19 +35,15 @@ const PaymentApp2c2p = props => {
     const inboundAPI = axios.create({
       timeout: 5000,
     })
-    const response = await inboundAPI.post(
-      '/_v/kasasg.connector2c2p/v0/changeStatus',
-      {
-        paymentId: appPayload.paymentId,
-        status: status,
-        callbackUrl: appPayload.callbackUrl,
-        paymentToken:
-          appPayload.paymentObject.paymentToken.response.paymentToken,
-        amount: appPayload.paymentObject.amount,
-        invoiceNo: appPayload.paymentObject.invoiceNo,
-        authorizationComplete: authorizationComplete,
-      }
-    )
+    await inboundAPI.post('/_v/kasasg.connector2c2p/v0/changeStatus', {
+      paymentId: appPayload.paymentId,
+      status: status,
+      callbackUrl: appPayload.callbackUrl,
+      paymentToken: appPayload.paymentObject.paymentToken.response.paymentToken,
+      amount: appPayload.paymentObject.amount,
+      invoiceNo: appPayload.paymentObject.invoiceNo,
+      authorizationComplete: authorizationComplete,
+    })
   }
 
   return (

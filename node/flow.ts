@@ -3,10 +3,7 @@ import {
   AuthorizationResponse,
 } from '@vtex/payment-provider'
 
-import { randomString } from './utils'
-
-type Flow =
-  | 'PaymentApp'
+type Flow = 'PaymentApp'
 
 export const flows: Record<
   Flow,
@@ -17,8 +14,12 @@ export const flows: Record<
   ) => AuthorizationResponse
 > = {
   PaymentApp: (request, paymentObject) => {
-
-    const { paymentId, inboundRequestsUrl, callbackUrl, transactionId } = request
+    const {
+      paymentId,
+      inboundRequestsUrl,
+      callbackUrl,
+      transactionId,
+    } = request
 
     return {
       paymentId,
@@ -30,15 +31,21 @@ export const flows: Record<
       message: null,
       paymentAppData: {
         appName: 'kasasg.connector2c2p',
-        payload: JSON.stringify({ inboundRequestsUrl, callbackUrl, paymentId, transactionId, paymentObject }),
+        payload: JSON.stringify({
+          inboundRequestsUrl,
+          callbackUrl,
+          paymentId,
+          transactionId,
+          paymentObject,
+        }),
       },
       identificationNumber: undefined,
       identificationNumberFormatted: undefined,
       barCodeImageNumber: undefined,
       barCodeImageType: undefined,
       delayToCancel: 600,
-      tid: randomString(), //check and edit later
-      nsu: randomString() //check and edit later
+      tid: '',
+      nsu: undefined,
     }
   },
 }
@@ -48,6 +55,5 @@ export const executeAuthorization = (
   paymentObject: Object,
   callback: (response: AuthorizationResponse) => void
 ): AuthorizationResponse => {
-  
   return flows['PaymentApp'](request, paymentObject, callback)
 }

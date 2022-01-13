@@ -1,15 +1,9 @@
-import {
-  ClientsConfig,
-  method,
-  ServiceContext
-} from '@vtex/api'
+import { ClientsConfig, method, ServiceContext } from '@vtex/api'
 import { PaymentProviderService } from '@vtex/payment-provider'
 
 import { changeStatus } from './handlers/paymentApp'
-//  import router from './routes'
 import Connector2c2p from './connector'
-import { Clients
- } from './clients'
+import { Clients } from './clients'
 const TIMEOUT_MS = 15000
 
 const clients: ClientsConfig<Clients> = {

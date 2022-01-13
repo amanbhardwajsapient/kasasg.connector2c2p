@@ -15,7 +15,6 @@ import {
   Settlements,
 } from '@vtex/payment-provider'
 import { Clients } from './clients'
-//import { randomString } from './utils'
 import { executeAuthorization } from './flow'
 
 export default class Connector2c2p extends PaymentProvider<Clients> {
@@ -32,7 +31,7 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
         invoiceNo: authorization.orderId,
         description: authorization.orderId,
         amount: authorization.value,
-        currencyCode: 'SGD',
+        currencyCode: authorization?.merchantSettings?.[4]?.value ?? 'SGD',
         merchantID: authorization?.merchantSettings?.[0]?.value ?? '',
         merchantSecretKey: authorization?.merchantSettings?.[1]?.value ?? '',
         baseURL:
@@ -64,7 +63,7 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
           paymentToken: paymentIdResponse.paymentToken,
           merchantID: authorization?.merchantSettings?.[0]?.value ?? '',
           invoiceNo: paymentIdResponse.invoiceNo,
-          locale: 'en',
+          locale: authorization?.merchantSettings?.[3]?.value ?? 'en',
           merchantSecretKey: authorization?.merchantSettings?.[1]?.value ?? '',
           baseURL:
             authorization?.merchantSettings?.[2]?.value ??
@@ -86,8 +85,8 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
         barCodeImageNumber: undefined,
         barCodeImageType: undefined,
         delayToCancel: 600,
-        tid: paymentIdResponse.paymentId, //check and edit later
-        nsu: paymentIdResponse.paymentId, //check and edit later
+        tid: '',
+        nsu: undefined,
       }
     } else if (
       paymentStatusObject.response.respCode === '0001' ||
@@ -102,30 +101,30 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
         acquirer: 'null',
         code: 'null',
         message: 'null',
-        identificationNumber: undefined,
+        identificationNumber: paymentIdResponse.paymentToken,
         identificationNumberFormatted: undefined,
         barCodeImageNumber: undefined,
         barCodeImageType: undefined,
         delayToCancel: 600,
-        tid: paymentIdResponse.paymentId, //check and edit later
-        nsu: paymentIdResponse.paymentId, //check and edit later
+        tid: '',
+        nsu: undefined,
       }
     } else {
       return {
         paymentId: paymentIdResponse.paymentId,
         paymentUrl: '',
         authorizationId: '',
-        status: 'denied', //check and edit later
+        status: 'denied',
         acquirer: 'null',
         code: 'null',
         message: 'null',
-        identificationNumber: undefined,
+        identificationNumber: paymentIdResponse.paymentToken,
         identificationNumberFormatted: undefined,
         barCodeImageNumber: undefined,
         barCodeImageType: undefined,
         delayToCancel: 600,
-        tid: paymentIdResponse.paymentId, //check and edit later
-        nsu: paymentIdResponse.paymentId, //check and edit later
+        tid: '',
+        nsu: undefined,
       }
     }
   }
@@ -134,8 +133,9 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
     cancellation: CancellationRequest
   ): Promise<CancellationResponse> {
     return Cancellations.deny(cancellation, {
-      code: '123',
-      message: 'Payment cancelled due to incomplete payment or manual cancellation.',
+      code: cancellation.paymentId,
+      message:
+        'Payment cancelled due to incomplete payment or manual cancellation.',
     })
   }
 
@@ -146,20 +146,6 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
   public async settle(
     settlement: SettlementRequest
   ): Promise<SettlementResponse> {
-    // const paymentIdResponse = await this.context.clients.payment2c2pid.get(
-    //   settlement.paymentId,
-    //   ['_all']
-    // )
-    // const settlementResponse = await this.context.clients.api2c2p.getSettlementResponse(
-    //   {
-    //     invoiceNo: paymentIdResponse?.invoiceNo,
-    //     merchantID: settlement?.merchantSettings?.[0]?.value ?? '',
-    //     amount: paymentIdResponse?.amount,
-    //     settlementURL:
-    //       settlement?.merchantSettings?.[3]?.value ??
-    //       'https://demo2.2c2p.com/2C2PFrontend/PaymentAction/2.0/action',
-    //   }
-    // )
     return Settlements.approve(settlement, {
       settleId: settlement.paymentId,
     })

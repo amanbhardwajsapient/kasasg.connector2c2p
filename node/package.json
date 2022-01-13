@@ -1,17 +1,12 @@
 {
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.6",
-    "@types/xml2js": "^0.4.9",
     "@vtex/clients": "^2.17.0",
     "@vtex/payment-provider": "^1.4.0",
     "co-body": "^6.0.0",
-    "crypto": "^1.0.1",
-    "jose": "^4.3.8",
     "jsonwebtoken": "^8.5.1",
     "ramda": "^0.25.0",
-    "typescript-string-enums": "^1.0.0",
-    "xml2js": "^0.4.23",
-    "xmlbuilder": "^15.1.1"
+    "typescript-string-enums": "^1.0.0"
   },
   "devDependencies": {
     "@types/co-body": "^0.0.3",

@@ -1,52 +1,50 @@
 {
-    "memory": 256,
-    "ttl": 10,
-    "timeout": 10,
-    "minReplicas": 2,
-    "maxReplicas": 4,
-    "routes": {
-        "manifest": {
-            "path": "/_v/kasasg.connector2c2p/v0/manifest",
-            "handler": "vtex.payment-gateway@1.x/providerManifest",
-            "headers": {
-                "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
-            },
-            "public": true
-        },
-        "paymentMethods": {
-            "path": "/_v/kasasg.connector2c2p/v0/payment-methods",
-            "handler": "vtex.payment-gateway@1.x/providerPaymentMethods",
-            "headers": {
-                "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
-            },
-            "public": true
-        },
-        "authorize": {
-            "path": "/_v/kasasg.connector2c2p/v0/payments",
-            "public": true
-        },
-        "cancel": {
-            "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/cancellations",
-            "public": true
-        },
-        "settle": {
-            "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/settlements",
-            "public": true
-        },
-        "refund": {
-            "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/refunds",
-            "public": true
-        },
-        "inbound": {
-            "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/inbound/:action",
-            "public": true
-        },
-        "changeStatus": {
-            "path": "/_v/kasasg.connector2c2p/v0/changeStatus",
-            "public": true
-        }
+  "memory": 256,
+  "ttl": 10,
+  "timeout": 10,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "routes": {
+    "manifest": {
+      "path": "/_v/kasasg.connector2c2p/v0/manifest",
+      "handler": "vtex.payment-gateway@1.x/providerManifest",
+      "headers": {
+        "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
+      },
+      "public": true
     },
-    "runtimeArgs": [
-        "--max_old_space_size=204"
-    ]
+    "paymentMethods": {
+      "path": "/_v/kasasg.connector2c2p/v0/payment-methods",
+      "handler": "vtex.payment-gateway@1.x/providerPaymentMethods",
+      "headers": {
+        "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
+      },
+      "public": true
+    },
+    "authorize": {
+      "path": "/_v/kasasg.connector2c2p/v0/payments",
+      "public": true
+    },
+    "cancel": {
+      "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/cancellations",
+      "public": true
+    },
+    "settle": {
+      "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/settlements",
+      "public": true
+    },
+    "refund": {
+      "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/refunds",
+      "public": true
+    },
+    "inbound": {
+      "path": "/_v/kasasg.connector2c2p/v0/payments/:paymentId/inbound/:action",
+      "public": true
+    },
+    "changeStatus": {
+      "path": "/_v/kasasg.connector2c2p/v0/changeStatus",
+      "public": true
+    }
+  },
+  "runtimeArgs": ["--max_old_space_size=204"]
 }

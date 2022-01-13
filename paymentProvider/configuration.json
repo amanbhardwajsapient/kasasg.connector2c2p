@@ -124,7 +124,11 @@
       "type": "text"
     },
     {
-      "name": "Settlement URL",
+      "name": "Locale",
+      "type": "text"
+    },
+    {
+      "name": "Currency Code",
       "type": "text"
     }
   ]

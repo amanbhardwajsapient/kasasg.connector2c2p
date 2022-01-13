@@ -17,7 +17,7 @@ export async function changeStatus(ctx: Context) {
     amount: body.amount,
     invoiceNo: body.invoiceNo,
     status: body.status,
-    authorizationComplete: body.authorizationComplete
+    authorizationComplete: body.authorizationComplete,
   }
 
   const updated = await ctx.clients.payment2c2pid.saveOrUpdate({
@@ -27,7 +27,7 @@ export async function changeStatus(ctx: Context) {
     amount: body.amount,
     invoiceNo: body.invoiceNo,
     paymentId: body.paymentId,
-    authorizationComplete: body.authorizationComplete
+    authorizationComplete: body.authorizationComplete,
   })
 
   if (updated) {

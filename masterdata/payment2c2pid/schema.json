@@ -1,50 +1,45 @@
 {
-    "$schema": "http://json-schema.org/schema#",
-    "title": "Payment2c2pId",
-    "type": "object",
-    "properties": {
-      "paymentId": {
-        "type": "string"
-      },
-      "paymentToken": {
-        "type": "string"
-      },
-      "amount": {
-        "type": "string"
-      },
-      "invoiceNo": {
-        "type": "string"
-      },
-      "status": {
-        "type":"string",
-        "enum": [
-          "undefined",
-          "approved",
-          "denied"
-        ]
-      },
-      "authorizationComplete": {
-        "type":"boolean"
-      }
+  "$schema": "http://json-schema.org/schema#",
+  "title": "Payment2c2pId",
+  "type": "object",
+  "properties": {
+    "paymentId": {
+      "type": "string"
     },
-    "v-default-fields": [
-      "id",
-      "paymentId",
-      "paymentToken",
-      "amount",
-      "invoiceNo",
-      "status",
-      "authorizationComplete"
-    ],
-    "v-indexed": [
-      "id",
-      "paymentId",
-      "paymentToken",
-      "amount",
-      "invoiceNo",
-      "status",
-      "authorizationComplete"
-    ],
-    "v-cache": false
-  }
-  
+    "paymentToken": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "string"
+    },
+    "invoiceNo": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["undefined", "approved", "denied"]
+    },
+    "authorizationComplete": {
+      "type": "boolean"
+    }
+  },
+  "v-default-fields": [
+    "id",
+    "paymentId",
+    "paymentToken",
+    "amount",
+    "invoiceNo",
+    "status",
+    "authorizationComplete"
+  ],
+  "v-indexed": [
+    "id",
+    "paymentId",
+    "paymentToken",
+    "amount",
+    "invoiceNo",
+    "status",
+    "authorizationComplete"
+  ],
+  "v-cache": false
+}
