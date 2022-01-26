@@ -1,15 +1,15 @@
 {
-  "memory": 256,
-  "ttl": 10,
-  "timeout": 10,
-  "minReplicas": 2,
-  "maxReplicas": 4,
+  "memory": 1024,
+  "ttl": 30,
+  "timeout": 60,
+  "minReplicas": 3,
+  "maxReplicas": 6,
   "routes": {
     "manifest": {
       "path": "/_v/kasasg.connector2c2p/v0/manifest",
       "handler": "vtex.payment-gateway@1.x/providerManifest",
       "headers": {
-        "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
+        "x-provider-app": "kasasg.connector2c2p@0.0.16"
       },
       "public": true
     },
@@ -17,7 +17,7 @@
       "path": "/_v/kasasg.connector2c2p/v0/payment-methods",
       "handler": "vtex.payment-gateway@1.x/providerPaymentMethods",
       "headers": {
-        "x-provider-app": "kasasg.connector2c2p@0.1.1-beta.1"
+        "x-provider-app": "kasasg.connector2c2p@0.0.16"
       },
       "public": true
     },
