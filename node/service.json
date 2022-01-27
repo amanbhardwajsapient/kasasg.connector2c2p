@@ -1,9 +1,9 @@
 {
   "memory": 1024,
   "ttl": 30,
-  "timeout": 60,
-  "minReplicas": 3,
-  "maxReplicas": 6,
+  "timeout": 30,
+  "minReplicas": 2,
+  "maxReplicas": 4,
   "routes": {
     "manifest": {
       "path": "/_v/kasasg.connector2c2p/v0/manifest",
@@ -46,5 +46,5 @@
       "public": true
     }
   },
-  "runtimeArgs": ["--max_old_space_size=204"]
+  "runtimeArgs": ["--max_old_space_size=800"]
 }

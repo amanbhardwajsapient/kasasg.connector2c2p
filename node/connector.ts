@@ -58,18 +58,40 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
       )
     }
 
-    const paymentStatusObject = paymentIdResponse.authorizationComplete
-      ? await this.context.clients.api2c2p.getPaymentStatus({
-          paymentToken: paymentIdResponse.paymentToken,
-          merchantID: authorization?.merchantSettings?.[0]?.value ?? '',
-          invoiceNo: paymentIdResponse.invoiceNo,
-          locale: authorization?.merchantSettings?.[3]?.value ?? 'en',
-          merchantSecretKey: authorization?.merchantSettings?.[1]?.value ?? '',
-          baseURL:
-            authorization?.merchantSettings?.[2]?.value ??
-            'https://sandbox-pgw.2c2p.com/payment/4.1',
-        })
-      : { response: { respCode: 'fail' } }
+    let paymentStatusObject: any
+
+    try {
+      paymentStatusObject = paymentIdResponse.authorizationComplete
+        ? await this.context.clients.api2c2p.getPaymentStatus({
+            paymentToken: paymentIdResponse.paymentToken,
+            merchantID: authorization?.merchantSettings?.[0]?.value ?? '',
+            invoiceNo: paymentIdResponse.invoiceNo,
+            locale: authorization?.merchantSettings?.[3]?.value ?? 'en',
+            merchantSecretKey:
+              authorization?.merchantSettings?.[1]?.value ?? '',
+            baseURL:
+              authorization?.merchantSettings?.[2]?.value ??
+              'https://sandbox-pgw.2c2p.com/payment/4.1',
+          })
+        : { response: { respCode: 'fail' } }
+    } catch (e) {
+      return {
+        paymentId: paymentIdResponse.paymentId,
+        paymentUrl: '',
+        authorizationId: '',
+        status: 'undefined',
+        acquirer: 'null',
+        code: 'null',
+        message: 'null',
+        identificationNumber: paymentIdResponse.paymentToken,
+        identificationNumberFormatted: undefined,
+        barCodeImageNumber: undefined,
+        barCodeImageType: undefined,
+        delayToCancel: 600,
+        tid: '',
+        nsu: undefined,
+      }
+    }
 
     if (paymentStatusObject.response.respCode === '0000') {
       return {
@@ -91,7 +113,8 @@ export default class Connector2c2p extends PaymentProvider<Clients> {
     } else if (
       paymentStatusObject.response.respCode === '0001' ||
       paymentStatusObject.response.respCode === '2001' ||
-      paymentStatusObject.response.respCode === '2003'
+      paymentStatusObject.response.respCode === '2003' ||
+      paymentStatusObject.response.respCode === '0999'
     ) {
       return {
         paymentId: paymentIdResponse.paymentId,

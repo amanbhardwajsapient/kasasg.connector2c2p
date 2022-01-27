@@ -39,6 +39,7 @@ export default class API2c2p
     public async getPaymentStatus(paymentData: any) : Promise<any> {
 
         const {paymentToken, merchantID, invoiceNo, locale, merchantSecretKey, baseURL} = paymentData;
+        let requestResponse: any
 
         const payload = {
             "paymentToken": paymentToken,
@@ -47,16 +48,25 @@ export default class API2c2p
             "locale": locale
         }
 
-        const requestResponse: any = await this.http.post(`${baseURL}/paymentInquiry`, {"payload": await jwt.sign(payload, merchantSecretKey)})
+        try {
+            requestResponse = await this.http.post(`${baseURL}/paymentInquiry`, {"payload": await jwt.sign(payload, merchantSecretKey)})
+        } catch(e) {
+            return  {
+                response: {
+                    respCode: '0999' 
+                }
+            }
+        }
 
         if(!!requestResponse.payload) {
             return {
-                "success": true,
-                "response": jwt.decode(requestResponse.payload)
+                response: jwt.decode(requestResponse.payload)
             }
         } else {
             return {
-                "success": false
+                response: {
+                    respCode: '0999' 
+                }
             }
         }
     }

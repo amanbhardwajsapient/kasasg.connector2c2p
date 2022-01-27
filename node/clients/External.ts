@@ -4,17 +4,20 @@ import { ExternalClient } from '@vtex/api'
 
 export default class External
     extends ExternalClient {
-    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
     constructor(context: IOContext, options?: InstanceOptions) {
-        super(``, context, options)
-    }
+        super(``, context, {
+          ...options,
+          headers: {},
+        });
+      }
 
-    public async sendPost(
-        url: string,
-        body: Object)
-        : Promise<any> {
-
-        return this.http.post(`${url}`, body)
-
+    public async sendPost(url: string, body: Object): Promise<any> {
+        try {
+            return this.http.post(`${url}`, body)
+        } catch {
+            return {
+                success: false
+            }
+        }
     }
 }
