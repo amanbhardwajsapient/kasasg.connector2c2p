@@ -1,0 +1,25 @@
+.iframe {
+  position: relative;
+  z-index: 999;
+  height: 98%;
+  width: 99%;
+}
+
+.modalContent {
+  position: absolute;
+  inset: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+  overflow: auto;
+  border-radius: 4px;
+  outline: currentcolor none medium;
+  padding: 20px;
+}
+
+@media only screen and (max-width: 454px) {
+  .modalContent {
+    inset: 0 !important;
+    width: 88vw;
+    height: 95%;
+  }
+}

@@ -11,15 +11,21 @@ export async function changeStatus(ctx: Context) {
     authorizationComplete: boolean
   } = await json(ctx.req)
 
-  const updated = await ctx.clients.payment2c2pid.saveOrUpdate({
-    id: body.paymentId,
-    status: body.status,
-    paymentToken: body.paymentToken,
-    amount: body.amount,
-    invoiceNo: body.invoiceNo,
-    paymentId: body.paymentId,
-    authorizationComplete: body.authorizationComplete,
-  })
+  let updated
+
+  try {
+    updated = await ctx.clients.payment2c2pid.saveOrUpdate({
+      id: body.paymentId,
+      status: body.status,
+      paymentToken: body.paymentToken,
+      amount: body.amount,
+      invoiceNo: body.invoiceNo,
+      paymentId: body.paymentId,
+      authorizationComplete: body.authorizationComplete,
+    })
+  } catch (e) {
+    updated = false
+  }
 
   if (updated) {
     try {

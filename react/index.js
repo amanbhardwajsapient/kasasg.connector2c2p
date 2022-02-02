@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import styles from './index.css'
+import styles from './paymentForm2c2p.css'
 
 import Modal from 'react-modal'
 const axios = require('axios')
@@ -57,7 +57,8 @@ const PaymentApp2c2p = props => {
             },
           }}
           isOpen={showModal}
-          contentLabel="Example Modal"
+          contentLabel="Payment Form"
+          className={styles.modalContent}
         >
           <iframe
             title="2c2p"
