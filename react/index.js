@@ -35,7 +35,7 @@ const PaymentApp2c2p = props => {
     const inboundAPI = axios.create({
       timeout: 30000,
     })
-    await inboundAPI.post('/_v/kasasg.connector2c2p/v0/changeStatus', {
+    await inboundAPI.post('/_v/kasasgqa.connector2c2p/v0/changeStatus', {
       paymentId: appPayload.paymentId,
       status: status,
       callbackUrl: appPayload.callbackUrl,

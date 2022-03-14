@@ -30,7 +30,7 @@ export const flows: Record<
       code: null,
       message: null,
       paymentAppData: {
-        appName: 'kasasg.connector2c2p',
+        appName: 'kasasgqa.connector2c2p',
         payload: JSON.stringify({
           inboundRequestsUrl,
           callbackUrl,
